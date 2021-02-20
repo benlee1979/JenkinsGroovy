@@ -4,10 +4,19 @@ node {
 	git branch: '${branch}', url: 'https://github.com/benlee1979/JenkinsGroovy.git'
     }
     stage('Build') {
-        echo 'Building....'
-	sh 'dotnet --version'
-	sh 'dotnet build ConsoleApp1'
-	echo 'Build new features'
+    	try {
+	    echo 'Building....'
+		sh 'dotnet --version'
+		sh 'dotnet build ConsoleApp1'
+		echo 'Build new features'
+	} catch(ex){
+		echo "Sth whet wrong"'
+		echo ex.toString();
+		currentBuild.result = 'FAIL';
+	} finally {
+		//cleanup
+	}
+    
     }
     stage('Test') {
         echo 'Testing....'
